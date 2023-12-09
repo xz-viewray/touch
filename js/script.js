@@ -13,7 +13,7 @@ const ongoingTouches = [];
 
 function handleStart(evt) {
   evt.preventDefault();
-  log("touchstart: ${touches.length}.");
+  log(`touchstart: ${touches.length}.`);
   const el = document.getElementById("canvas");
   const ctx = el.getContext("2d");
   const touches = evt.changedTouches;
