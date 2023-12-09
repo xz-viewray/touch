@@ -34,6 +34,8 @@ function handleMove(evt) {
   const el = document.getElementById("canvas");
   const ctx = el.getContext("2d");
   const touches = evt.changedTouches;
+  if (touches.length > 1)
+    log(`move evt touches.length: ${touches.length}`)
 
   for (let i = 0; i < touches.length; i++) {
     const color = colorForTouch(touches[i]);
