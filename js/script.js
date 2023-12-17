@@ -1,10 +1,15 @@
 function startup() {
   const el = document.getElementById("canvas");
-  el.addEventListener("touchstart", handleStart);
-  el.addEventListener("touchend", handleEnd);
-  el.addEventListener("touchcancel", handleCancel);
-  el.addEventListener("touchmove", handleMove);
+  el.addEventListener("pointerdown", handleStart);
+  el.addEventListener("pointerup", handleEnd);
+  el.addEventListener("pointercancel", handleCancel);
+  el.addEventListener("pointermove", handleMove);
+  el.addEventListener("click", handleEvent)
   log("Initialized.");
+}
+
+function handleEvent(evt) {
+  log(`${evt.pointerId}, ${evt.type}, (${evt.clientX}, ${evt.clientY})`)
 }
 
 document.addEventListener("DOMContentLoaded", startup);
@@ -13,7 +18,7 @@ const ongoingTouches = [];
 
 function handleStart(evt) {
   evt.preventDefault();
-  log(`touchstart: ${evt.changedTouches.length}.`);
+  log(`pointerdown`);
   const el = document.getElementById("canvas");
   const ctx = el.getContext("2d");
   const touches = evt.changedTouches;
@@ -58,7 +63,7 @@ function handleMove(evt) {
 
 function handleEnd(evt) {
   evt.preventDefault();
-  log("touchend");
+  log("pointerup");
   const el = document.getElementById("canvas");
   const ctx = el.getContext("2d");
   const touches = evt.changedTouches;
