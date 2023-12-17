@@ -88,7 +88,7 @@ function handleEnd(evt) {
 
 function handleCancel(evt) {
   evt.preventDefault();
-  log("touchcancel.");
+  log("pointercancel.");
   const touches = evt.changedTouches;
 
   for (let i = 0; i < touches.length; i++) {
