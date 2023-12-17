@@ -4,12 +4,17 @@ function startup() {
   el.addEventListener("pointerup", handleEnd);
   el.addEventListener("pointercancel", handleCancel);
   el.addEventListener("pointermove", handleMove);
-  el.addEventListener("click", handleEvent)
+  for (const key in el)
+    if (/^on/.test(key)) {
+      const eventType = key.substring(2);
+      el.addEventListener(eventType, handleEvent)
+    }
   log("Initialized.");
 }
 
 function handleEvent(evt) {
-  log(`${evt.pointerId}, ${evt.type}, (${evt.clientX}, ${evt.clientY})`)
+  if (evt.type !== 'pointerrawupdate' && evt.type !== 'pointermove' && evt.type !== 'mousemove')
+    log(`${evt.pointerId}, ${evt.type}, (${evt.clientX}, ${evt.clientY})`)
 }
 
 document.addEventListener("DOMContentLoaded", startup);
@@ -21,17 +26,14 @@ function handleStart(evt) {
   log(`pointerdown`);
   const el = document.getElementById("canvas");
   const ctx = el.getContext("2d");
-  const touches = evt.changedTouches;
 
-  for (let i = 0; i < touches.length; i++) {
-    ongoingTouches.push(copyTouch(touches[i]));
-    const color = colorForTouch(touches[i]);
-    log(`color of touch with id ${touches[i].identifier} = ${color}`);
-    ctx.beginPath();
-    ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false); // a circle at the start
-    ctx.fillStyle = color;
-    ctx.fill();
-  }
+  ongoingTouches.push(copyTouch(evt));
+  const color = colorForTouch(touches[i]);
+  log(`color of touch with id ${touches[i].pointerId} = ${color}`);
+  ctx.beginPath();
+  ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false); // a circle at the start
+  ctx.fillStyle = color;
+  ctx.fill();
 }
 
 function handleMove(evt) {
@@ -98,9 +100,9 @@ function handleCancel(evt) {
 }
 
 function colorForTouch(touch) {
-  let r = touch.identifier % 16;
-  let g = Math.floor(touch.identifier / 3) % 16;
-  let b = Math.floor(touch.identifier / 7) % 16;
+  let r = touch.pointerId % 16;
+  let g = Math.floor(touch.pointerId / 3) % 16;
+  let b = Math.floor(touch.pointerId / 7) % 16;
   r = r.toString(16); // make it a hex digit
   g = g.toString(16); // make it a hex digit
   b = b.toString(16); // make it a hex digit
@@ -108,8 +110,8 @@ function colorForTouch(touch) {
   return color;
 }
 
-function copyTouch({ identifier, pageX, pageY }) {
-  return { identifier, pageX, pageY };
+function copyTouch({ pointerId, pageX, pageY }) {
+  return { pointerId, pageX, pageY };
 }
 
 function ongoingTouchIndexById(idToFind) {
