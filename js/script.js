@@ -31,7 +31,7 @@ function handleStart(evt) {
   const color = colorForTouch(evt);
   log(`color of touch with id ${evt.pointerId} = ${color}`);
   ctx.beginPath();
-  ctx.arc(evt.pageX, evt.pageY, 4, 0, 2 * Math.PI, false); // a circle at the start
+  ctx.arc(evt.clientX, evt.clientY, 4, 0, 2 * Math.PI, false); // a circle at the start
   ctx.fillStyle = color;
   ctx.fill();
 }
@@ -46,7 +46,7 @@ function handleMove(evt) {
 
   if (idx >= 0) {
     ctx.beginPath();
-    ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
+    ctx.moveTo(ongoingTouches[idx].clientX, ongoingTouches[idx].clientY);
     ctx.lineTo(evt.clientX, evt.clientY);
     ctx.lineWidth = 4;
     ctx.strokeStyle = color;
@@ -71,9 +71,9 @@ function handleEnd(evt) {
     ctx.lineWidth = 4;
     ctx.fillStyle = color;
     ctx.beginPath();
-    ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
-    ctx.lineTo(evt.pageX, evt.pageY);
-    ctx.fillRect(evt.pageX - 4, evt.pageY - 4, 8, 8); // and a square at the end
+    ctx.moveTo(ongoingTouches[idx].clinetX, ongoingTouches[idx].clientY);
+    ctx.lineTo(evt.clientX, evt.clientY);
+    ctx.fillRect(evt.clientX - 4, evt.clientY - 4, 8, 8); // and a square at the end
     ongoingTouches.splice(idx, 1); // remove it; we're done
   } else {
     log("can't figure out which touch to end");
@@ -99,8 +99,8 @@ function colorForTouch(touch) {
   return color;
 }
 
-function copyTouch({ pointerId, pageX, pageY }) {
-  return { pointerId, pageX, pageY };
+function copyTouch({ pointerId, clientX, clientY }) {
+  return { pointerId, clientX, clientY };
 }
 
 function ongoingTouchIndexById(idToFind) {
