@@ -4,12 +4,17 @@ function startup() {
   el.addEventListener("pointerup", handleEnd);
   el.addEventListener("pointercancel", handleCancel);
   el.addEventListener("pointermove", handleMove);
+  el.addEventListener("touchstart", handleTouchStart)
   for (const key in el)
     if (/^on/.test(key)) {
       const eventType = key.substring(2);
       el.addEventListener(eventType, handleEvent)
     }
   log("Initialized.");
+}
+
+function handleTouchStart(evt) {
+  log("touchstart")
 }
 
 function handleEvent(evt) {
