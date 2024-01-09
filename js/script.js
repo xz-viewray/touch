@@ -28,6 +28,7 @@ const ongoingTouches = [];
 
 function handleStart(evt) {
   evt.preventDefault();
+  evt.stopPropagation();
   log(`pointerdown ${evt.isPrimary}`);
   const el = document.getElementById("canvas");
   const ctx = el.getContext("2d");
