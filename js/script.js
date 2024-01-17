@@ -19,7 +19,7 @@ function handleTouchStart(evt) {
 
 function handleEvent(evt) {
   if (evt.type !== 'pointerrawupdate' && evt.type !== 'pointermove' && evt.type !== 'mousemove')
-    log(`${evt.pointerId}, ${evt.type}, ${evt.buttons}, (${evt.clientX}, ${evt.clientY})`)
+    log(`${evt.pointerId}, ${evt.type}, ${evt.buttons}, (${evt.offsetX}, ${evt.offsetY})`)
 }
 
 document.addEventListener("DOMContentLoaded", startup);
